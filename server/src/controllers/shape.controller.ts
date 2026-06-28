@@ -45,3 +45,22 @@ export const updateShapePosition = asyncHandler(async (req: AuthRequest, res: Re
 
     return res.json(new ApiResponse(200, 'Shape position updated', shape))
 })
+
+export const softDeleteShape = asyncHandler(async (req: AuthRequest, res: Response) => {
+    const room = await Room.findOne({ code: req.params.code })
+    if (!room) throw new ApiError(404, 'Room not found')
+
+    const shape = await Shape.findById(req.params.shapeId)
+    if (!shape || shape.isDeleted) throw new ApiError(404, 'Shape not found')
+
+    const userId = (req.user as any)._id.toString()
+    const isOwner = room.ownerId.toString() === userId
+    const isAuthor = shape.userId?.toString() === userId
+
+    if (!isOwner && !isAuthor) throw new ApiError(403, 'Unauthorized to delete this shape')
+
+    shape.isDeleted = true
+    await shape.save()
+
+    return res.json(new ApiResponse(200, 'Shape deleted', shape))
+})
