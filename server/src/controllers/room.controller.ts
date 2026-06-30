@@ -28,12 +28,30 @@ export const getRoom = asyncHandler(async (req: AuthRequest, res: Response) => {
 
     if(!room) throw new ApiError(404, 'Room not found')
 
+    // private room - Only owner can view it
+    if (!room.isPublic) {
+        const userId = (req.user as any)?._id?.toString()
+        const ownerIdStr = (room.ownerId as any)?._id?.toString() || room.ownerId?.toString()
+        if (!userId || ownerIdStr !== userId) {
+            throw new ApiError(403, 'The room is private')
+        }
+    }
+
     return res.status(200).json(new ApiResponse(200, 'Room fetched successfully', room))
 })
 
 export const getRoomShapes = asyncHandler(async (req: AuthRequest, res: Response) => {
     const room = await Room.findOne({ code: req.params.code })
     if(!room) throw new ApiError(404, 'Room not found')
+
+    // private room - Only owner can view shapes
+    if (!room.isPublic) {
+        const userId = (req.user as any)?._id?.toString()
+        const ownerIdStr = (room.ownerId as any)?._id?.toString() || room.ownerId?.toString()
+        if (!userId || ownerIdStr !== userId) {
+            throw new ApiError(403, 'The room is private')
+        }
+    }
 
     const shapes = await Shape.find({ roomId: room._id, isDeleted: false }).sort({ createdAt: 1 }).lean()
 
