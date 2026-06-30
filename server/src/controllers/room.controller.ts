@@ -40,6 +40,13 @@ export const getRoom = asyncHandler(async (req: AuthRequest, res: Response) => {
     return res.status(200).json(new ApiResponse(200, 'Room fetched successfully', room))
 })
 
+export const getMyRooms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    const userId = (req.user as any)._id
+    const rooms = await Room.find({ ownerId: userId }).sort({ createdAt: -1 })
+
+    return res.status(200).json(new ApiResponse(200, 'Rooms fetched successfully', rooms))
+})
+
 export const getRoomShapes = asyncHandler(async (req: AuthRequest, res: Response) => {
     const room = await Room.findOne({ code: req.params.code })
     if(!room) throw new ApiError(404, 'Room not found')
