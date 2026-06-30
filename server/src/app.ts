@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import passport from 'passport'
 
 import './config/passport'
@@ -8,6 +9,11 @@ import authRoutes from './routes/auth.route'
 import roomRoutes from './routes/room.route'
 
 const app = express()
+
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}))
 
 app.use(express.json())
 app.use(passport.initialize())
