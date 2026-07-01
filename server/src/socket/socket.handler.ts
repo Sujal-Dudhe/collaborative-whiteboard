@@ -80,6 +80,14 @@ export function registerSocketHandlers(io: Server) {
                 return
             }
 
+            if (!room.isPublic) {
+                const isOwner = socket.userId && room.ownerId.toString() === socket.userId
+                if (!isOwner) {
+                    socket.emit('error', { message: 'Room is private' })
+                    return
+                }
+            }
+
             socket.roomCode = roomCode
             await socket.join(roomCode)
 
