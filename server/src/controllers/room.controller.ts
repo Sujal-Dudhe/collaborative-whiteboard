@@ -76,6 +76,10 @@ export const deleteRoom = asyncHandler(async (req: AuthRequest, res: Response) =
         throw new ApiError(403, 'You are not authorized to delete this room')
     }
 
+    getIO().to(room.code).emit('room-deleted', {
+        message: `The room ${room.name} has been deleted by ${req.user?.name}`
+    })
+
     await Shape.deleteMany({ roomId: room._id })
     await room.deleteOne()
 
