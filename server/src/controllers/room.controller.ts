@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { nanoid } from "nanoid";
+import { getIO } from "../socket/io";
 
 import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
@@ -90,7 +91,12 @@ export const clearRoom = asyncHandler(async (req: AuthRequest, res: Response) =>
         throw new ApiError(403, 'You are not authorized to clear this room')
     }
 
-    const result = await Shape.updateMany({ roomId: room._id }, { $set: { isDeleted: true } })
+    await Shape.updateMany({ roomId: room._id }, { $set: {
+        isDeleted: true }})
 
-    res.json(new ApiResponse(200, 'Canvas cleared', { shapesCleared: result.modifiedCount }))
+    getIO().to(room.code).emit('canvas-cleared', {
+        clearedBy: (req.user as any).name,
+    })
+
+    return res.status(200).json(new ApiResponse(200, 'Canvas cleared', null))
 })
