@@ -1,9 +1,19 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import { useAuthStore } from './store/authStore'
+
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RoomPage from './pages/RoomPage'
 
 export default function App() {
+    const { token, fetchMe } = useAuthStore()
+
+    useEffect(() => {
+        if (token) fetchMe()
+    }, [])
+
     return (
         <BrowserRouter>
             <Routes>
