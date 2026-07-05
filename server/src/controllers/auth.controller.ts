@@ -15,7 +15,7 @@ const createToken = (userId: string) => {
 
         const token = createToken(user._id.toString())
 
-        res.redirect(`${process.env.CLIENT_URL}/auth/auth/callback?token=${token}`)
+        res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`)
     })
 
 export const getMe = asyncHandler(async (req: Request, res: Response) => {
