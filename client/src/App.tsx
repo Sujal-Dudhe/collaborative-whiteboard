@@ -6,6 +6,8 @@ import { useAuthStore } from './store/authStore'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RoomPage from './pages/RoomPage'
+import AuthCallbackPage from './pages/AuthCallbackPage'
+
 
 export default function App() {
     const { token, fetchMe } = useAuthStore()
@@ -20,6 +22,7 @@ export default function App() {
                 <Route path="/"           element={<HomePage />} />
                 <Route path="/login"      element={<LoginPage />} />
                 <Route path="/room/:code" element={<RoomPage />} />
+                <Route path="/auth/callback" element={<AuthCallbackPage />} />
             </Routes>
         </BrowserRouter>
     )
