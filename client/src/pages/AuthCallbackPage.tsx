@@ -19,8 +19,8 @@ export default function AuthCallbackPage() {
     }, [])
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-            <p className="text-gray-600 dark:text-gray-400 text-lg animate-pulse">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-neutral-950">
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm animate-pulse">
                 Signing you in...
             </p>
         </div>

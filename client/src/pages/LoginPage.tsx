@@ -41,13 +41,13 @@ export default function LoginPage() {
 
             {/* Left panel — branding (hidden on mobile) */}
             <div className="hidden lg:flex flex-col justify-between w-1/2 bg-neutral-950 dark:bg-neutral-900 p-12">
-                <div className="flex items-center gap-2.5 text-white">
+                <a href="/" className="flex items-center gap-2.5 text-white hover:opacity-80 transition-opacity">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 20h9"/>
                         <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                     </svg>
                     <span className="font-semibold text-sm">Whiteboard</span>
-                </div>
+                </a>
 
                 <div>
                     <blockquote className="text-2xl font-medium text-white leading-snug tracking-tight">
@@ -66,6 +66,17 @@ export default function LoginPage() {
                 </div>
 
                 <div className="w-full max-w-sm">
+                    {/* Mobile Brand Name Logo */}
+                    <div className="lg:hidden mb-8 flex items-center justify-start">
+                        <a href="/" className="flex items-center gap-2 text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                            <span className="font-semibold text-sm tracking-tight">Whiteboard</span>
+                        </a>
+                    </div>
+
                     <div className="mb-8">
                         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
                             Sign in
@@ -113,11 +124,11 @@ export default function LoginPage() {
 
                     <div className="mt-6 flex items-center gap-3">
                         <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-800" />
-                        <span className="text-xs text-neutral-400">or</span>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400">or</span>
                         <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-800" />
                     </div>
 
-                    <p className="mt-6 text-center text-xs text-neutral-400 dark:text-neutral-500">
+                    <p className="mt-6 text-center text-xs text-neutral-500 dark:text-neutral-400">
                         No account needed to join as a guest
                     </p>
                 </div>

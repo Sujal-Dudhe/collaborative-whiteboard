@@ -16,10 +16,10 @@ export default function Navbar() {
         <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: '56px' }}
             className="flex items-center justify-between px-6 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800"
         >
-            <Link to="/" className="flex items-center gap-2 text-neutral-900 dark:text-neutral-100 hover:opacity-70 transition-opacity duration-150">
+            <a href="/" className="flex items-center gap-2 text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity">
                 <PencilIcon />
                 <span className="text-sm font-semibold tracking-tight">Whiteboard</span>
-            </Link>
+            </a>
 
             <div className="flex items-center gap-2">
                 <ThemeToggle />
