@@ -16,7 +16,7 @@ export default function AuthCallbackPage() {
         } else {
             navigate('/login')
         }
-    }, [])
+    }, [setToken, fetchMe, navigate])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-neutral-950">

@@ -31,6 +31,12 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+body {
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+}
+
 .bg-dot-grid {
   background-image: radial-gradient(var(--color-neutral-200) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -38,4 +44,32 @@ html {
 
 .dark .bg-dot-grid {
   background-image: radial-gradient(var(--color-neutral-800) 1px, transparent 1px);
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes backdrop-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-modal-in {
+  animation: modal-fade-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdrop-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { useAuthStore } from '../store/authStore'
 import api from '../lib/axios'
 import Navbar from '../components/ui/Navbar'
@@ -71,8 +72,18 @@ export default function HomePage() {
     const [joining, setJoining] = useState(false)
     const [joinError, setJoinError] = useState('')
 
+    useEffect(() => {
+        if (user && sessionStorage.getItem('post_login_action') === 'create_room') {
+            sessionStorage.removeItem('post_login_action')
+            setTimeout(() => {
+                setShowCreateModal(true)
+            }, 0)
+        }
+    }, [user])
+
     const handleCreateClick = (e: React.MouseEvent) => {
         if (!user) {
+            sessionStorage.setItem('post_login_action', 'create_room')
             navigate('/login')
         } else {
             e.preventDefault()
@@ -89,8 +100,9 @@ export default function HomePage() {
             const res = await api.post('/room', { name: roomName, isPublic })
             const code = res.data.data.code
             navigate(`/room/${code}`)
-        } catch (err: any) {
-            setCreateError(err.response?.data?.message || 'Failed to create room')
+        } catch (err) {
+            const error = err as { response?: { data?: { message?: string } } }
+            setCreateError(error.response?.data?.message || 'Failed to create room')
         } finally {
             setCreating(false)
         }
@@ -106,8 +118,9 @@ export default function HomePage() {
             // Verify if the room exists on the server first
             await api.get(`/room/${trimmedCode}`)
             navigate(`/room/${trimmedCode}`)
-        } catch (err: any) {
-            setJoinError(err.response?.data?.message || 'Room not found or private')
+        } catch (err) {
+            const error = err as { response?: { data?: { message?: string } } }
+            setJoinError(error.response?.data?.message || 'Room not found or private')
         } finally {
             setJoining(false)
         }
@@ -228,7 +241,7 @@ export default function HomePage() {
                 <Divider />
 
                 {/* ── How it works ──────────────────────────────── */}
-                <section className="max-w-5xl mx-auto px-6 py-24">
+                <section id="how-it-works" className="max-w-5xl mx-auto px-6 py-24">
                     <p className="text-xs font-semibold tracking-[0.1em] uppercase text-neutral-400 dark:text-neutral-500 mb-3">How it works</p>
                     <h2 className="text-3xl font-semibold tracking-[-0.025em] mb-12">Up in three steps</h2>
 
@@ -306,7 +319,10 @@ export default function HomePage() {
                         >
                             Create a free room
                         </button>
-                        <button className="text-sm font-medium px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all duration-150">
+                        <button 
+                            onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="text-sm font-medium px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all duration-150 cursor-pointer"
+                        >
                             See how it works
                         </button>
                     </div>
@@ -332,12 +348,12 @@ export default function HomePage() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <div 
-                        className="fixed inset-0 bg-neutral-950/40 dark:bg-neutral-950/60 backdrop-blur-xs transition-opacity"
+                        className="fixed inset-0 bg-neutral-950/40 dark:bg-neutral-950/60 backdrop-blur-xs animate-backdrop-in"
                         onClick={() => setShowCreateModal(false)}
                     />
                     
                     {/* Modal Content */}
-                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 rounded-2xl p-6 shadow-xl max-w-sm w-full relative z-10 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 rounded-2xl p-6 shadow-xl max-w-sm w-full relative z-10 animate-modal-in">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
                                 Create new board
@@ -414,12 +430,12 @@ export default function HomePage() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <div 
-                        className="fixed inset-0 bg-neutral-950/40 dark:bg-neutral-950/60 backdrop-blur-xs transition-opacity"
+                        className="fixed inset-0 bg-neutral-950/40 dark:bg-neutral-950/60 backdrop-blur-xs animate-backdrop-in"
                         onClick={() => setShowJoinModal(false)}
                     />
                     
                     {/* Modal Content */}
-                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 rounded-2xl p-6 shadow-xl max-w-sm w-full relative z-10 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 rounded-2xl p-6 shadow-xl max-w-sm w-full relative z-10 animate-modal-in">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
                                 Join existing room

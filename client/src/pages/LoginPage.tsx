@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (user) navigate('/')
-    }, [user])
+    }, [user, navigate])
 
     const handleGoogle = () => {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
@@ -85,6 +85,17 @@ export default function LoginPage() {
                             Continue to your workspace
                         </p>
                     </div>
+
+                    {sessionStorage.getItem('post_login_action') === 'create_room' && (
+                        <div className="mb-6 p-3.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-start gap-2.5 text-xs text-neutral-600 dark:text-neutral-400">
+                            <svg className="mt-0.5 shrink-0 text-neutral-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            <span>Please sign in to create a collaborative whiteboard room.</span>
+                        </div>
+                    )}
 
                     <div className="space-y-3">
                         <button
