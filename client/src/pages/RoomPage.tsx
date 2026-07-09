@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { io } from 'socket.io-client'
+import toast from 'react-hot-toast'
 import { useAuthStore } from '../store/authStore'
 import api from '../lib/axios'
 
@@ -212,7 +213,7 @@ export default function RoomPage() {
         })
 
         socket.on('room-deleted', ({ message }: { message: string }) => {
-            alert(message || 'The room has been deleted.')
+            toast.success(message || 'The room has been deleted.')
             navigate('/')
         })
 
@@ -689,9 +690,10 @@ export default function RoomPage() {
         if (!confirm('Are you sure you want to clear the entire canvas? This cannot be undone.')) return
         try {
             await api.delete(`/room/${code}/clear`)
+            toast.success('Canvas cleared!')
         } catch (err) {
             console.error('Failed to clear canvas', err)
-            alert('Failed to clear canvas')
+            toast.error('Failed to clear canvas')
         }
     }
 
@@ -699,15 +701,16 @@ export default function RoomPage() {
         if (!confirm('Are you sure you want to delete this room? Everyone will be booted.')) return
         try {
             await api.delete(`/room/${code}`)
+            toast.success('Room deleted!')
         } catch (err) {
             console.error('Failed to delete room', err)
-            alert('Failed to delete room')
+            toast.error('Failed to delete room')
         }
     }
 
     const handleShare = () => {
         navigator.clipboard.writeText(window.location.href)
-        alert('Room URL copied to clipboard!')
+        toast.success('Room URL copied to clipboard!')
     }
 
     const handleGuestSubmit = (e: React.FormEvent) => {

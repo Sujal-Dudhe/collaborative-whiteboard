@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 import { useAuthStore } from '../store/authStore'
 import api from '../lib/axios'
@@ -113,9 +114,10 @@ export default function HomePage() {
         try {
             await api.delete(`/room/${codeToDelete}`)
             setMyRooms(prev => prev.filter(r => r.code !== codeToDelete))
+            toast.success('Whiteboard room deleted!')
         } catch (err) {
             console.error('Failed to delete room', err)
-            alert('Failed to delete room')
+            toast.error('Failed to delete room')
         }
     }
 

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 import { useAuthStore } from './store/authStore'
 
@@ -18,6 +19,7 @@ export default function App() {
 
     return (
         <BrowserRouter>
+            <Toaster position="top-center" reverseOrder={false} />
             <Routes>
                 <Route path="/"           element={<HomePage />} />
                 <Route path="/login"      element={<LoginPage />} />
