@@ -10,7 +10,7 @@ const PencilIcon = () => (
 )
 
 export default function Navbar() {
-    const { user, logout } = useAuthStore()
+    const { user, token, loading, logout } = useAuthStore()
 
     return (
         <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: '56px' }}
@@ -23,7 +23,11 @@ export default function Navbar() {
 
             <div className="flex items-center gap-2">
                 <ThemeToggle />
-                {user ? (
+                {loading || (token && !user) ? (
+                    <div className="w-8 h-8 flex items-center justify-center ml-1">
+                        <div className="w-3.5 h-3.5 rounded-full border border-neutral-300 dark:border-neutral-700 border-t-neutral-800 dark:border-t-neutral-100 animate-spin" />
+                    </div>
+                ) : user ? (
                     <div className="flex items-center gap-3 ml-1">
                         {user.avatar ? (
                             <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full object-cover" />
