@@ -74,7 +74,7 @@ export function registerSocketHandlers(io: Server) {
         console.log(`[ws] + ${socket.id} (${socket.displayName})`)
 
         socket.on('join-room', async ({ roomCode }: JoinRoomPayload) => {
-            const room = await Room.findOne({ roomCode })
+            const room = await Room.findOne({ code: roomCode })
             if (!room) {
                 socket.emit('error', { message: 'Room not found '})
                 return
@@ -218,6 +218,16 @@ export function registerSocketHandlers(io: Server) {
                 io.to(socket.roomCode).emit('shape-removed', { shapeId })
             } catch (err) {
                 console.error('[ws] undo error:', err)
+            }
+        })
+
+        socket.on('delete-shape', async ({ shapeId }: { shapeId: string }) => {
+            if (!socket.roomCode) return
+            try {
+                await Shape.findByIdAndUpdate(shapeId, { isDeleted: true })
+                io.to(socket.roomCode).emit('shape-removed', { shapeId })
+            } catch (err) {
+                console.error('[ws] delete-shape error:', err)
             }
         })
 

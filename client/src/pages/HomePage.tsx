@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import { useAuthStore } from '../store/authStore'
 import api from '../lib/axios'
@@ -80,6 +80,44 @@ export default function HomePage() {
             }, 0)
         }
     }, [user])
+
+    interface RoomItem {
+        _id: string
+        name: string
+        code: string
+        isPublic: boolean
+        createdAt: string
+    }
+
+    const [myRooms, setMyRooms] = useState<RoomItem[]>([])
+    const [fetchingRooms, setFetchingRooms] = useState(false)
+
+    useEffect(() => {
+        const fetchMyRooms = async () => {
+            if (!user) return
+            setFetchingRooms(true)
+            try {
+                const res = await api.get('/room/my-rooms')
+                setMyRooms(res.data.data)
+            } catch (err) {
+                console.error('Failed to fetch rooms', err)
+            } finally {
+                setFetchingRooms(false)
+            }
+        }
+        fetchMyRooms()
+    }, [user])
+
+    const handleDeleteRoom = async (codeToDelete: string) => {
+        if (!confirm('Are you sure you want to delete this room permanently? All drawings will be deleted.')) return
+        try {
+            await api.delete(`/room/${codeToDelete}`)
+            setMyRooms(prev => prev.filter(r => r.code !== codeToDelete))
+        } catch (err) {
+            console.error('Failed to delete room', err)
+            alert('Failed to delete room')
+        }
+    }
 
     const handleCreateClick = (e: React.MouseEvent) => {
         if (!user) {
@@ -212,6 +250,87 @@ export default function HomePage() {
                 </div>
 
                 <Divider />
+
+                {/* ── Dashboard Rooms Grid ──────────────────────── */}
+                {user && (
+                    <>
+                        <section className="max-w-5xl mx-auto px-6 py-20 animate-in fade-in duration-200">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8">
+                                <div>
+                                    <p className="text-xs font-semibold tracking-[0.1em] uppercase text-neutral-400 dark:text-neutral-500 mb-2">Dashboard</p>
+                                    <h2 className="text-3xl font-semibold tracking-[-0.025em] leading-tight">Your Whiteboards</h2>
+                                </div>
+                                <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed">
+                                    Manage, share, and jump back into your collaborative whiteboards.
+                                </p>
+                            </div>
+
+                            {fetchingRooms ? (
+                                <div className="py-12 text-center text-sm text-neutral-500 dark:text-neutral-400 animate-pulse">
+                                    Loading your boards...
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                    {/* Create Card */}
+                                    <div 
+                                        onClick={() => setShowCreateModal(true)}
+                                        className="h-44 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl flex flex-col items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50/50 dark:hover:bg-neutral-900/30 transition-all duration-150 cursor-pointer"
+                                    >
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        <span className="text-sm font-semibold">Create new board</span>
+                                    </div>
+
+                                    {myRooms.map((room) => (
+                                        <div 
+                                            key={room._id} 
+                                            className="h-44 p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl flex flex-col justify-between hover:shadow-card dark:hover:shadow-card-dark transition-all duration-150"
+                                        >
+                                            <div>
+                                                <div className="flex justify-between items-start gap-2 mb-1.5">
+                                                    <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate" title={room.name}>
+                                                        {room.name}
+                                                    </h3>
+                                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                                                        room.isPublic 
+                                                            ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400' 
+                                                            : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+                                                    }`}>
+                                                        {room.isPublic ? 'Public' : 'Private'}
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-3">
+                                                    Code: {room.code}
+                                                </p>
+                                            </div>
+
+                                            <div className="flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800/60 pt-3 mt-auto">
+                                                <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
+                                                    {new Date(room.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <button 
+                                                        onClick={() => handleDeleteRoom(room.code)}
+                                                        className="p-1.5 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
+                                                        title="Delete Board"
+                                                    >
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                    </button>
+                                                    <Link 
+                                                        to={`/room/${room.code}`}
+                                                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:opacity-90 transition-opacity"
+                                                    >
+                                                        Open Board
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                        <Divider />
+                    </>
+                )}
 
                 {/* ── Features ──────────────────────────────────── */}
                 <section className="max-w-5xl mx-auto px-6 py-24">
