@@ -473,7 +473,6 @@ export default function RoomPage() {
         }
 
         if (currentTool === 'text') {
-            setTextInput({ x: coords.x, y: coords.y, value: '' })
             return
         }
 
@@ -572,6 +571,15 @@ export default function RoomPage() {
     }
 
     const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        if (currentTool === 'text') {
+            if (textInput && textInput.value.trim()) {
+                handleCommitText()
+            }
+            const coords = getCanvasCoords(e)
+            setTextInput({ x: coords.x, y: coords.y, value: '' })
+            return
+        }
+
         if (!isDrawing.current) return
         isDrawing.current = false
 
@@ -592,7 +600,7 @@ export default function RoomPage() {
 
         if (!startPoint.current) return
 
-        const tempId = Math.random().toString(36).substring(2, 9)
+        const tempId = crypto.randomUUID()
         const w = coords.x - startPoint.current.x
         const h = coords.y - startPoint.current.y
 
@@ -641,7 +649,7 @@ export default function RoomPage() {
         if (!textInput) return
         const val = textInput.value.trim()
         if (val) {
-            const tempId = Math.random().toString(36).substring(2, 9)
+            const tempId = crypto.randomUUID()
             const payload = {
                 tempId,
                 shapeType: 'text' as const,
