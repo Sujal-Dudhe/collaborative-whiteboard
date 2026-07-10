@@ -721,6 +721,67 @@ export default function RoomPage() {
         toast.success('Room URL copied to clipboard!')
     }
 
+    const handleExport = async () => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+
+        try {
+            const tempCanvas = document.createElement('canvas')
+            tempCanvas.width = canvas.width
+            tempCanvas.height = canvas.height
+            const tempCtx = tempCanvas.getContext('2d')
+            if (!tempCtx) return
+
+            const isDark = document.documentElement.classList.contains('dark')
+            tempCtx.fillStyle = isDark ? '#0a0a0a' : '#ffffff'
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
+
+            tempCtx.drawImage(canvas, 0, 0)
+
+            const filename = `${roomName.replace(/\s+/g, '_') || 'whiteboard'}-${code}.png`
+
+            if ('showSaveFilePicker' in window) {
+                const blob = await new Promise<Blob | null>((resolve) => tempCanvas.toBlob(resolve, 'image/png'))
+                if (!blob) throw new Error('Blob creation failed')
+
+                const handle = await (window as unknown as {
+                    showSaveFilePicker: (options: object) => Promise<{
+                        createWritable: () => Promise<{
+                            write: (blob: Blob) => Promise<void>
+                            close: () => Promise<void>
+                        }>
+                    }>
+                }).showSaveFilePicker({
+                    suggestedName: filename,
+                    types: [{
+                        description: 'PNG Image',
+                        accept: { 'image/png': ['.png'] }
+                    }]
+                })
+                const writable = await handle.createWritable()
+                await writable.write(blob)
+                await writable.close()
+
+                toast.success('Whiteboard saved successfully!')
+            } else {
+                const dataUrl = tempCanvas.toDataURL('image/png')
+                const link = document.createElement('a')
+                link.download = filename
+                link.href = dataUrl
+                link.click()
+
+                toast.success('Whiteboard exported as PNG!')
+            }
+        } catch (err) {
+            // Silence user cancel abort errors
+            if (err instanceof Error && err.name === 'AbortError') {
+                return
+            }
+            console.error('Failed to export canvas', err)
+            toast.error('Failed to export canvas')
+        }
+    }
+
     const handleGuestSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         const trimmed = guestNameInput.trim()
@@ -795,6 +856,15 @@ export default function RoomPage() {
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         Share
+                    </button>
+
+                    <button 
+                        onClick={handleExport}
+                        className="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-neutral-200/60 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors flex items-center gap-1.5 cursor-pointer"
+                        title="Export Board as PNG"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export
                     </button>
 
                     {isOwner && (
