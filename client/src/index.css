@@ -5,20 +5,22 @@
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 
-  --color-neutral-50:  #f9f9f9;
-  --color-neutral-100: #f0f0f0;
-  --color-neutral-200: #e4e4e4;
-  --color-neutral-300: #d0d0d0;
-  --color-neutral-400: #a0a0a0;
-  --color-neutral-500: #717171;
-  --color-neutral-600: #4a4a4a;
-  --color-neutral-700: #2e2e2e;
-  --color-neutral-800: #1a1a1a;
-  --color-neutral-900: #111111;
-  --color-neutral-950: #080808;
+  /* Neutral scale — slightly warmer than pure grey */
+  --color-neutral-50:  #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d1d1d6;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #0f0f11;
 
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-card-dark: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 1px 6px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-card-dark: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 *, *::before, *::after {
@@ -35,41 +37,34 @@ body {
   font-family: var(--font-sans);
   margin: 0;
   padding: 0;
+  /* Light: warm white. Dark: not pure black — slightly elevated */
+  background: #ffffff;
+  color: #18181b;
+}
+
+html.dark body {
+  background: #0f0f11;
+  color: #fafafa;
 }
 
 .bg-dot-grid {
-  background-image: radial-gradient(var(--color-neutral-200) 1px, transparent 1px);
+  background-image: radial-gradient(#d1d1d6 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-.dark .bg-dot-grid {
-  background-image: radial-gradient(var(--color-neutral-800) 1px, transparent 1px);
+html.dark .bg-dot-grid {
+  background-image: radial-gradient(#27272a 1px, transparent 1px);
 }
 
 @keyframes modal-fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 @keyframes backdrop-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.animate-modal-in {
-  animation: modal-fade-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-backdrop-in {
-  animation: backdrop-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+.animate-modal-in    { animation: modal-fade-in 0.22s cubic-bezier(0.16,1,0.3,1) forwards; }
+.animate-backdrop-in { animation: backdrop-fade-in 0.2s cubic-bezier(0.16,1,0.3,1) forwards; }
