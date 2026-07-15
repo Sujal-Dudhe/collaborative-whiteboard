@@ -614,7 +614,7 @@ export default function RoomPage() {
     return (
         <div className="h-screen w-screen bg-white dark:bg-neutral-950 overflow-hidden relative select-none">
             {/* Header controls bar */}
-            <header className="absolute top-4 left-4 right-4 z-20 h-14 flex items-center justify-between px-4 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark">
+            <header className="absolute top-4 left-4 right-4 z-20 h-14 flex items-center justify-between px-4 bg-neutral-50/90 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark">
                 <div className="flex items-center gap-3">
                     <Link to="/" className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -648,7 +648,7 @@ export default function RoomPage() {
 
                     <button 
                         onClick={handleShare}
-                        className="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-neutral-200/60 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors flex items-center gap-1.5 cursor-pointer"
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         Share
@@ -656,7 +656,7 @@ export default function RoomPage() {
 
                     <button 
                         onClick={handleExport}
-                        className="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-neutral-200/60 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors flex items-center gap-1.5 cursor-pointer"
                         title="Export Board as PNG"
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -685,7 +685,7 @@ export default function RoomPage() {
             </header>
 
             {/* Left toolbar floating */}
-            <aside className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 p-2 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark">
+            <aside className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 p-2 bg-neutral-50/90 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark">
                 {toolsList.map((item) => (
                     <button
                         key={item.tool}
@@ -706,7 +706,7 @@ export default function RoomPage() {
             </aside>
 
             {/* Right toolbar panel for styling */}
-            <aside className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-4 p-4 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark w-40">
+            <aside className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-4 p-4 bg-neutral-50/90 dark:bg-neutral-950/80 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-card dark:shadow-card-dark w-40">
                 <div>
                     <h3 className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Colors</h3>
                     <div className="grid grid-cols-3 gap-2">
@@ -728,7 +728,7 @@ export default function RoomPage() {
                     </div>
                 </div>
 
-                <div className="border-t border-neutral-200/60 dark:border-neutral-800" />
+                <div className="border-t border-neutral-200 dark:border-neutral-800" />
 
                 <div>
                     <h3 className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Thickness</h3>
@@ -740,7 +740,7 @@ export default function RoomPage() {
                                 className={`flex-1 text-xs py-1 rounded-lg border font-medium transition-all cursor-pointer ${
                                     strokeWidth === w.value
                                         ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-neutral-900 dark:border-white'
-                                        : 'border-neutral-200/60 dark:border-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                                        : 'border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                                 }`}
                             >
                                 {w.label[0]}
@@ -751,7 +751,7 @@ export default function RoomPage() {
 
                 {(currentTool === 'rectangle' || currentTool === 'circle' || currentTool === 'select') && (
                     <>
-                        <div className="border-t border-neutral-200/60 dark:border-neutral-800" />
+                        <div className="border-t border-neutral-200 dark:border-neutral-800" />
                         <div>
                             <h3 className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Fill Area</h3>
                             <div className="flex gap-1.5">
@@ -765,7 +765,7 @@ export default function RoomPage() {
                                         className={`flex-1 text-xs py-1 rounded-lg border font-medium transition-all cursor-pointer ${
                                             fillColor === item.value
                                                 ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-neutral-900 dark:border-white'
-                                                : 'border-neutral-200/60 dark:border-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-900'
+                                                : 'border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-900'
                                         }`}
                                     >
                                         {item.label}
@@ -776,11 +776,11 @@ export default function RoomPage() {
                     </>
                 )}
 
-                <div className="border-t border-neutral-200/60 dark:border-neutral-800" />
+                <div className="border-t border-neutral-200 dark:border-neutral-800" />
 
                 <button 
                     onClick={handleUndo}
-                    className="w-full text-xs py-1.5 rounded-lg border border-neutral-200/60 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900 flex items-center justify-center gap-1.5 cursor-pointer font-medium"
+                    className="w-full text-xs py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center justify-center gap-1.5 cursor-pointer font-medium"
                 >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
                     Undo

@@ -176,7 +176,7 @@ export default function HomePage() {
                             </button>
                             <button
                                 onClick={() => setShowJoinModal(true)}
-                                className="text-sm font-medium px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all duration-150"
+                                className="text-sm font-medium px-5 py-2.5 rounded-xl border border-neutral-200 hover:border-neutral-300 dark:border-neutral-600 dark:hover:border-neutral-500 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all duration-150"
                             >
                                 Join with a code
                             </button>
@@ -305,9 +305,9 @@ export default function HomePage() {
                         {features.map((f) => (
                             <div
                                 key={f.title}
-                                className="bg-white dark:bg-neutral-950 p-7 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors duration-150"
+                                className="bg-neutral-50 dark:bg-neutral-900 p-7 hover:bg-neutral-100/70 dark:hover:bg-neutral-800/50 transition-colors duration-150"
                             >
-                                <div className="w-8 h-8 rounded-lg mb-4 flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400">
+                                <div className="w-8 h-8 rounded-lg mb-4 flex items-center justify-center bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800/60 text-neutral-500 dark:text-neutral-400">
                                     {f.icon}
                                 </div>
                                 <h3 className="text-sm font-semibold mb-1.5 text-neutral-900 dark:text-neutral-100">{f.title}</h3>
